@@ -11,9 +11,13 @@ export class FilmsService {
     protected filmsRepository: FilmsRepository,
     @InjectModel(Film.name) private FilmModel: Model<FilmDocument>,
   ) {}
-  async findUsers() {
+  async findFilms() {
     return await this.filmsRepository.findFilms();
   }
+  async findFilmsByID(filmId: string) {
+    return await this.filmsRepository.findFilmByID(filmId);
+  }
+
   async deleteFilmByID(filmId: string): Promise<boolean> {
     const foundFilm: FilmDocument = await this.filmsRepository.findFilmByID(
       filmId,

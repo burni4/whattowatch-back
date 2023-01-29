@@ -15,7 +15,13 @@ export class FilmsController {
   constructor(protected filmsService: FilmsService) {}
   @Get()
   async getFilms() {
-    const result = await this.filmsService.findUsers();
+    const result = await this.filmsService.findFilms();
+    return result;
+  }
+  @Get(':id')
+  async getFilmsByID(@Param('id') filmId: string) {
+    const result = await this.filmsService.findFilmsByID(filmId);
+    if (!result) return 'Film not found';
     return result;
   }
   @Post()
