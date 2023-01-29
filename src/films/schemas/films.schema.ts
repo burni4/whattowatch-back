@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument, Types } from 'mongoose';
+import { CreateFilmInputModelType } from '../types/films.types';
 
 @Schema()
 export class Film {
@@ -25,6 +26,25 @@ export class Film {
   shortDescription: string;
   @Prop({ type: String })
   posterUrl: string;
+
+  async fillEntity(data: CreateFilmInputModelType): Promise<void> {
+    this._id = new Types.ObjectId();
+    this.id = new Types.ObjectId().toString();
+    this.title = data.title;
+    this.year = data.year;
+    this.runtime = data.runtime;
+    this.genres = data.genres;
+    this.director = data.director;
+    this.actors = data.actors;
+    this.description = data.description;
+    this.shortDescription = data.shortDescription;
+    this.posterUrl = data.posterUrl;
+  }
 }
+
 export type FilmDocument = HydratedDocument<Film>;
 export const FilmSchema = SchemaFactory.createForClass(Film);
+
+FilmSchema.methods = {
+  fillEntity: Film.prototype.fillEntity,
+};
