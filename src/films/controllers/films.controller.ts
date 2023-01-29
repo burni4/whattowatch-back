@@ -28,12 +28,9 @@ export class FilmsController {
     return filmId;
   }
   @Delete(':id')
-  deleteFilmById(@Param('id') filmId: string) {
-    return filmId;
-  }
-  @Delete('all')
-  async deleteAllFilms() {
-    const result: boolean = await this.filmsService.deleteAllFilms();
-    return 'All movies have been successfully deleted';
+  async deleteFilmById(@Param('id') filmId: string) {
+    const result = await this.filmsService.deleteFilmByID(filmId);
+    if (!result) return 'Film not deleted';
+    return 'The film has been successfully deleted';
   }
 }

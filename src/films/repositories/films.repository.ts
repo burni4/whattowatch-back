@@ -10,8 +10,15 @@ export class FilmsRepository {
     await film.save();
     return true;
   }
+  async delete(film: FilmDocument): Promise<boolean> {
+    await film.deleteOne();
+    return true;
+  }
   async findFilms(): Promise<FilmDocument[]> {
     return await this.FilmModel.find({}).exec();
+  }
+  async findFilmByID(filmId: string): Promise<FilmDocument> {
+    return await this.FilmModel.findOne({ id: filmId }).exec();
   }
   async deleteAllFilms(): Promise<boolean> {
     await this.FilmModel.deleteMany({});

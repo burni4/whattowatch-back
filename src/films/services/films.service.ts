@@ -14,6 +14,16 @@ export class FilmsService {
   async findUsers() {
     return await this.filmsRepository.findFilms();
   }
+  async deleteFilmByID(filmId: string): Promise<boolean> {
+    const foundFilm: FilmDocument = await this.filmsRepository.findFilmByID(
+      filmId,
+    );
+    if (!foundFilm) return false;
+
+    await this.filmsRepository.delete(foundFilm);
+
+    return true;
+  }
   async deleteAllFilms(): Promise<boolean> {
     return await this.filmsRepository.deleteAllFilms();
   }
