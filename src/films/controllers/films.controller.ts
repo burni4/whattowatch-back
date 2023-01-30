@@ -8,7 +8,10 @@ import {
   Put,
 } from '@nestjs/common';
 import { FilmsService } from '../services/films.service';
-import { CreateFilmInputModelType } from '../types/films.types';
+import {
+  CreateFilmInputModelType,
+  UpdateFilmInputModelType,
+} from '../types/films.types';
 
 @Controller('films')
 export class FilmsController {
@@ -30,8 +33,13 @@ export class FilmsController {
     return inputModel;
   }
   @Put(':id')
-  updateFilmById(@Param('id') filmId: string) {
-    return filmId;
+  async updateFilmById(
+    @Param('id') filmId: string,
+    @Body() inputModel: UpdateFilmInputModelType,
+  ) {
+    const result = await this.filmsService.updateFilmById(filmId, inputModel);
+    if (!result) return 'Film data not updated';
+    return 'Film data has been successfully updated';
   }
   @Delete(':id')
   async deleteFilmById(@Param('id') filmId: string) {

@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { FilmsRepository } from '../repositories/films.repository';
-import { CreateFilmInputModelType } from '../types/films.types';
+import {
+  CreateFilmInputModelType,
+  UpdateFilmInputModelType,
+} from '../types/films.types';
 import { InjectModel } from '@nestjs/mongoose';
 import { Film, FilmDocument } from '../schemas/films.schema';
 import { Model } from 'mongoose';
@@ -25,6 +28,20 @@ export class FilmsService {
     if (!foundFilm) return false;
 
     await this.filmsRepository.delete(foundFilm);
+
+    return true;
+  }
+  async updateFilmById(
+    filmId: string,
+    data: UpdateFilmInputModelType,
+  ): Promise<boolean> {
+    const foundFilm: FilmDocument = await this.filmsRepository.findFilmByID(
+      filmId,
+    );
+    if (!foundFilm) return false;
+
+    await foundFilm.updateEntity(data);
+    await this.filmsRepository.save(foundFilm);
 
     return true;
   }
